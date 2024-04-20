@@ -1,1 +1,1 @@
-# GalleryList
+# NewsClips

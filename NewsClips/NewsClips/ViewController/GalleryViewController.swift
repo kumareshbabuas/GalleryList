@@ -15,26 +15,35 @@ class GalleryViewController: UIViewController {
     var gallerList:GalleryModel = []
     @IBOutlet weak var interNetView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var loadingBgView: UIView!
+    @IBOutlet weak var loaderView: UIActivityIndicatorView!
     var prefetchedIndices = Set<Int>()
     let totalRecords = 390
     let batchSize = 30
     var currentPage = 1
     override func viewDidLoad()  {
         super.viewDidLoad()
+        loadingBgView.isHidden = true
+        collectionView.isHidden = true
         self.collectionView.register(UINib(nibName: "GalleryCell", bundle: nil), forCellWithReuseIdentifier: "GalleryCell")
         self.collectionView.register(UINib(nibName: "NoInternetCell", bundle: nil), forCellWithReuseIdentifier: "NoInternetCell")
         getGalleryListFromServer()
     }
     func getGalleryListFromServer(){
+        loadingBgView.isHidden = false
         Task {
             if Reachbility().isConnectedToNetwork() {
-                self.collectionView.isHidden = false
-                self.interNetView.isHidden = true
                 self.fetchDataForPage(page: currentPage)
+                await MainActor.run {
+                    self.collectionView.isHidden = false
+                    self.interNetView.isHidden = true
+                    self.loadingBgView.isHidden = true
+                }
             }else{
                 await MainActor.run {
                     self.collectionView.isHidden = true
                     self.interNetView.isHidden = false
+                    self.loadingBgView.isHidden = true
                 }
             }
         }

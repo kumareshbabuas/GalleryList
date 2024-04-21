@@ -32,6 +32,6 @@ This project is implemented in Swift using native iOS technologies.
 
 To run the project:
 1. Clone the repository.
-2. Open the Xcode project file. (Xcode latest version 15.3)
+2. Open the Xcode project file from Xcode latest version 15.3 - File Name: NewsClips.xcodeproj
 3. Build and run the project on a simulator.
 4. Explore the image grid and scroll through the images.
